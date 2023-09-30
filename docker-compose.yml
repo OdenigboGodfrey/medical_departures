@@ -1,0 +1,21 @@
+version: "3"
+services:
+  web:
+    container_name: BlogApp
+    stdin_open: true
+    tty: true 
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - PG_HOST=
+      - PG_PORT=
+      - PG_USERNAME=
+      - PG_PASSWORD=
+      - PG_DATABASENAME=
+      - PORT=3002
+      - SECRET_KEY='blog_uSER_api&#$@-dev'
+      - NODE_ENV=development
+      - APP_NAME='Blog App'
+    ports:
+      - 80:3002
