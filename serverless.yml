@@ -8,6 +8,13 @@ plugins:
 provider:
  name: aws
  runtime: nodejs18.x
+ region: eu-west-1
+ environment:
+    PG_HOST: db.cuihe12zvuil.eu-west-1.rds.amazonaws.com
+    PG_PORT: 3306
+    PG_USERNAME: bLog_User
+    PG_PASSWORD: BLogPaSSwORd_12345
+    PG_DATABASENAME: db
 
 functions:
  main: 
@@ -16,3 +23,6 @@ functions:
      - http:
          method: any
          path: /{any+}
+package:
+  exclude:
+    - node_modules/**

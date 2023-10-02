@@ -8,7 +8,7 @@ export const sequelizeConfig: SequelizeOptions = {
   host:
     process.env.NODE_ENV == 'development'
       ? process.env.PG_HOST
-      : process.env.RDS_HOSTNAME,
+      : 'db.cuihe12zvuil.eu-west-1.rds.amazonaws.com',
   port:
     process.env.NODE_ENV == 'development'
       ? process.env.PG_PORT
@@ -18,15 +18,13 @@ export const sequelizeConfig: SequelizeOptions = {
   username:
     process.env.NODE_ENV == 'development'
       ? process.env.PG_USERNAME
-      : process.env.RDS_USERNAME,
+      : 'bLog_User',
   password:
     process.env.NODE_ENV == 'development'
       ? process.env.PG_PASSWORD
-      : process.env.RDS_PASSWORD,
+      : 'BLogPaSSwORd_12345',
   database:
-    process.env.NODE_ENV == 'development'
-      ? process.env.PG_DATABASENAME
-      : process.env.RDS_SID,
+    process.env.NODE_ENV == 'development' ? process.env.PG_DATABASENAME : 'db',
   models: [User, Blog], // Add all your model classes here
   logging: console.log,
 };
