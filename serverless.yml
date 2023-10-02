@@ -12,13 +12,14 @@ provider:
  region: eu-west-1
  
 #  environment:
-    # PG_HOST: db.cuihe12zvuil.eu-west-1.rds.amazonaws.com
-    # PG_PORT: 3306
-    # PG_USERNAME: bLog_User
-    # PG_PASSWORD: BLogPaSSwORd_12345
-    # PG_DATABASENAME: db
-    # SECRET_KEY: 'blog_uSER_api&#$@-stage'
-    # APP_NAME: 'Blog App'
+#     PG_HOST: db.cuihe12zvuil.eu-west-1.rds.amazonaws.com
+#     PG_PORT: 3306
+#     PG_USERNAME: bLog_User
+#     PG_PASSWORD: BLogPaSSwORd_12345
+#     PG_DATABASENAME: db
+#     SECRET_KEY: 'blog_uSER_api&#$@-stage'
+#     APP_NAME: 'Blog App'
+    
     # DB_DIALECT: 'mysql'
     # DB_NAME: 'db'
     # DB_USERNAME: 'bLog_User'
@@ -41,6 +42,13 @@ functions:
      - http:
          method: get
          path: /migrate
+ swagger:
+   handler: src/lambda.swagger
+   timeout: 60
+   events:
+     - http:
+         method: any
+         path: /api-docs/{any+}
 package:
   exclude:
     - node_modules/**

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { INestApplication, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -13,6 +13,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './modules/auth/constants';
 import { JwtStrategy } from './modules/auth/jwt.strategy';
 import { BlogModule } from './modules/blog/blog.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 @Module({
   imports: [
