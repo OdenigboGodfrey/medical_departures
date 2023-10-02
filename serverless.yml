@@ -4,17 +4,28 @@ plugins:
  - 'serverless-plugin-typescript'
  - serverless-plugin-optimize
  - serverless-offline
+ - serverless-sequelize-migrations
 
 provider:
  name: aws
  runtime: nodejs18.x
  region: eu-west-1
- environment:
-    PG_HOST: db.cuihe12zvuil.eu-west-1.rds.amazonaws.com
-    PG_PORT: 3306
-    PG_USERNAME: bLog_User
-    PG_PASSWORD: BLogPaSSwORd_12345
-    PG_DATABASENAME: db
+ 
+#  environment:
+    # PG_HOST: db.cuihe12zvuil.eu-west-1.rds.amazonaws.com
+    # PG_PORT: 3306
+    # PG_USERNAME: bLog_User
+    # PG_PASSWORD: BLogPaSSwORd_12345
+    # PG_DATABASENAME: db
+    # SECRET_KEY: 'blog_uSER_api&#$@-stage'
+    # APP_NAME: 'Blog App'
+    # DB_DIALECT: 'mysql'
+    # DB_NAME: 'db'
+    # DB_USERNAME: 'bLog_User'
+    # DB_PASSWORD: 'BLogPaSSwORd_12345'
+    # DB_HOST: 'db.cuihe12zvuil.eu-west-1.rds.amazonaws.com'
+    # DB_PORT: '3306'
+
 
 functions:
  main: 
@@ -23,6 +34,19 @@ functions:
      - http:
          method: any
          path: /{any+}
+ migrate:
+   handler: src/lambda.migrate
+   timeout: 60
+   events:
+     - http:
+         method: get
+         path: /migrate
 package:
   exclude:
     - node_modules/**
+custom:
+  deploy: 
+    commands:
+      - npx serverless invoke local -f migrate 
+    stage:
+      before: deploy

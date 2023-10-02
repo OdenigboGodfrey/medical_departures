@@ -31,6 +31,7 @@ export class AuthService {
       login,
       password,
     );
+    console.log('result', result);
     return result;
   }
 

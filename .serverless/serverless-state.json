@@ -13,7 +13,15 @@
         "PG_PORT": "3306",
         "PG_USERNAME": "bLog_User",
         "PG_PASSWORD": "BLogPaSSwORd_12345",
-        "PG_DATABASENAME": "db"
+        "PG_DATABASENAME": "db",
+        "SECRET_KEY": "blog_uSER_api&#$@-stage",
+        "APP_NAME": "Blog App",
+        "DB_DIALECT": "mysql",
+        "DB_NAME": "db",
+        "DB_USERNAME": "bLog_User",
+        "DB_PASSWORD": "BLogPaSSwORd_12345",
+        "DB_HOST": "db.cuihe12zvuil.eu-west-1.rds.amazonaws.com",
+        "DB_PORT": "3306"
       },
       "stage": "dev",
       "versionFunctions": true,
@@ -94,6 +102,12 @@
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
               "LogGroupName": "/aws/lambda/blogapp-serverless-dev-main"
+            }
+          },
+          "MigrateLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/blogapp-serverless-dev-migrate"
             }
           },
           "IamRoleLambdaExecution": {
@@ -181,7 +195,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/blogapp-serverless/dev/1696274101875-2023-10-02T19:15:01.875Z/blogapp-serverless.zip"
+                "S3Key": "serverless/blogapp-serverless/dev/1696282632072-2023-10-02T21:37:12.072Z/blogapp-serverless.zip"
               },
               "Handler": "src/lambda.handler",
               "Runtime": "nodejs18.x",
@@ -194,7 +208,15 @@
                   "PG_PORT": "3306",
                   "PG_USERNAME": "bLog_User",
                   "PG_PASSWORD": "BLogPaSSwORd_12345",
-                  "PG_DATABASENAME": "db"
+                  "PG_DATABASENAME": "db",
+                  "SECRET_KEY": "blog_uSER_api&#$@-stage",
+                  "APP_NAME": "Blog App",
+                  "DB_DIALECT": "mysql",
+                  "DB_NAME": "db",
+                  "DB_USERNAME": "bLog_User",
+                  "DB_PASSWORD": "BLogPaSSwORd_12345",
+                  "DB_HOST": "db.cuihe12zvuil.eu-west-1.rds.amazonaws.com",
+                  "DB_PORT": "3306"
                 }
               },
               "Role": {
@@ -208,14 +230,66 @@
               "MainLogGroup"
             ]
           },
-          "MainLambdaVersionVRpJUvCIiyuwXE13CiLRlMae8ST28QIEIJlVldC8NUY": {
+          "MigrateLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/blogapp-serverless/dev/1696282632072-2023-10-02T21:37:12.072Z/blogapp-serverless.zip"
+              },
+              "Handler": "src/lambda.migrate",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "blogapp-serverless-dev-migrate",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "PG_HOST": "db.cuihe12zvuil.eu-west-1.rds.amazonaws.com",
+                  "PG_PORT": "3306",
+                  "PG_USERNAME": "bLog_User",
+                  "PG_PASSWORD": "BLogPaSSwORd_12345",
+                  "PG_DATABASENAME": "db",
+                  "SECRET_KEY": "blog_uSER_api&#$@-stage",
+                  "APP_NAME": "Blog App",
+                  "DB_DIALECT": "mysql",
+                  "DB_NAME": "db",
+                  "DB_USERNAME": "bLog_User",
+                  "DB_PASSWORD": "BLogPaSSwORd_12345",
+                  "DB_HOST": "db.cuihe12zvuil.eu-west-1.rds.amazonaws.com",
+                  "DB_PORT": "3306"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "MigrateLogGroup"
+            ]
+          },
+          "MainLambdaVersionQvp5UkmrN8OElhvSMwpX3NYVd0CphZJq4QQBsXlnw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "MainLambdaFunction"
               },
-              "CodeSha256": "TBtT2RzHeGBScMDhpkCiCuKSW9nqdjjyRAlFkBN3r7I="
+              "CodeSha256": "CTZSqSgvkhucj+aJPmxgftnQ8mzC83EHp/9iAa8OQgU="
+            }
+          },
+          "MigrateLambdaVersionBdajhEXg4uDcxr45MLPtsHvgr6SwHzJbgz3ilwkQk": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "MigrateLambdaFunction"
+              },
+              "CodeSha256": "CTZSqSgvkhucj+aJPmxgftnQ8mzC83EHp/9iAa8OQgU="
             }
           },
           "ApiGatewayRestApi": {
@@ -291,7 +365,7 @@
               "MainLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1696273927668": {
+          "ApiGatewayDeployment1696282488825": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -353,10 +427,19 @@
           "MainLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "MainLambdaVersionVRpJUvCIiyuwXE13CiLRlMae8ST28QIEIJlVldC8NUY"
+              "Ref": "MainLambdaVersionQvp5UkmrN8OElhvSMwpX3NYVd0CphZJq4QQBsXlnw"
             },
             "Export": {
               "Name": "sls-blogapp-serverless-dev-MainLambdaFunctionQualifiedArn"
+            }
+          },
+          "MigrateLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "MigrateLambdaVersionBdajhEXg4uDcxr45MLPtsHvgr6SwHzJbgz3ilwkQk"
+            },
+            "Export": {
+              "Name": "sls-blogapp-serverless-dev-MigrateLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -471,10 +554,21 @@
       },
       "vpc": {}
     },
+    "custom": {
+      "deploy": {
+        "commands": [
+          "npx serverless invoke local -f migrate"
+        ],
+        "stage": {
+          "before": "deploy"
+        }
+      }
+    },
     "plugins": [
       "serverless-plugin-typescript",
       "serverless-plugin-optimize",
-      "serverless-offline"
+      "serverless-offline",
+      "serverless-sequelize-migrations"
     ],
     "pluginsData": {},
     "functions": {
@@ -501,7 +595,24 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "MainLambdaVersionVRpJUvCIiyuwXE13CiLRlMae8ST28QIEIJlVldC8NUY"
+        "versionLogicalId": "MainLambdaVersionQvp5UkmrN8OElhvSMwpX3NYVd0CphZJq4QQBsXlnw"
+      },
+      "migrate": {
+        "handler": "src/lambda.migrate",
+        "events": [],
+        "name": "blogapp-serverless-dev-migrate",
+        "package": {
+          "exclude": [
+            "node_modules/serverless-plugin-typescript"
+          ],
+          "include": [],
+          "patterns": []
+        },
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs18.x",
+        "vpc": {},
+        "versionLogicalId": "MigrateLambdaVersionBdajhEXg4uDcxr45MLPtsHvgr6SwHzJbgz3ilwkQk"
       }
     },
     "configValidationMode": "warn",
@@ -523,7 +634,10 @@
         ],
         "artifactsS3KeyDirname": "serverless/blogapp-serverless/dev/code-artifacts",
         "artifact": "/home/back/Documents/src/nodejs/nest/test/BlogApp/.serverless/blogapp-serverless.zip",
-        "artifactDirectoryName": "serverless/blogapp-serverless/dev/1696274101875-2023-10-02T19:15:01.875Z"
+        "artifactDirectoryName": "serverless/blogapp-serverless/dev/1696282632072-2023-10-02T21:37:12.072Z"
+      },
+      "custom": {
+        "$ref": "$[\"service\"][\"custom\"]"
       }
     },
     "layers": {},
@@ -531,7 +645,7 @@
     "artifact": "/home/back/Documents/src/nodejs/nest/test/BlogApp/.build/.serverless/blogapp-serverless.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/blogapp-serverless/dev/1696274101875-2023-10-02T19:15:01.875Z",
+    "artifactDirectoryName": "serverless/blogapp-serverless/dev/1696282632072-2023-10-02T21:37:12.072Z",
     "artifact": "blogapp-serverless.zip"
   }
 }
