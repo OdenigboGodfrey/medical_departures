@@ -26,6 +26,7 @@ export class AuthService {
     login: string,
     password: string,
   ): Promise<ResponseDTO<UserDTO>> {
+    console.log('login', login, 'password', password);
     const result = await this.userService.getUserByLoginAndPassword(
       login,
       password,

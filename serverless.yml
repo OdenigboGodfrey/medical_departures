@@ -1,0 +1,18 @@
+service: blogapp-serverless
+
+plugins:
+ - 'serverless-plugin-typescript'
+ - serverless-plugin-optimize
+ - serverless-offline
+
+provider:
+ name: aws
+ runtime: nodejs18.x
+
+functions:
+ main: 
+   handler: src/lambda.handler
+   events:
+     - http:
+         method: any
+         path: /{any+}

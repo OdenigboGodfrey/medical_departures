@@ -34,6 +34,7 @@ export class AuthController {
       payload.login,
       payload.password,
     );
+    console.log('user', user);
     if (!user.status) {
       return user.getResponse();
     }
