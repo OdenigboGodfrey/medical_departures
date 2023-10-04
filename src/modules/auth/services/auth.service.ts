@@ -7,16 +7,18 @@ import { UserService } from '../../user/services/user.service';
 import { UserDTO } from '../../user/dtos/user.dto';
 import { RESPONSE_CODE } from './../../../shared/enums/response-code.enum';
 import { ErrorClass } from './../../../shared/dto/error-class.dto';
-import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
-import { Logger } from 'winston';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject('JwtService') private jwtService: JwtService,
     @Inject('UserService') private readonly userService: UserService,
-    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
+
+  logger = {
+    error: (...args: any) => console.error(args),
+    info: (...args: any) => console.log(args),
+  };
 
   userDTO(data: any) {
     return this.userService.newUserDTO(data);

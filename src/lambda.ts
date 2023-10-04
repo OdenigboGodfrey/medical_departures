@@ -1,6 +1,7 @@
 import { Handler, Context } from 'aws-lambda';
 import { Server } from 'http';
 import { createServer, proxy } from 'aws-serverless-express';
+// const { createServer, proxy } = require('aws-serverless-express');
 import { eventContext } from 'aws-serverless-express/middleware';
 
 import { NestFactory } from '@nestjs/core';
@@ -12,22 +13,7 @@ import { runMigration } from './sequelize.config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 const binaryMimeTypes: string[] = [];
 
-let cachedServer: Server;
 let cachedSwaggerServer: Server;
-
-async function bootstrapServer(): Promise<Server> {
-  if (!cachedServer) {
-    const expressApp = express();
-    const nestApp = await NestFactory.create(
-      AppModule,
-      new ExpressAdapter(expressApp),
-    );
-    nestApp.use(eventContext());
-    await nestApp.init();
-    cachedServer = createServer(expressApp, undefined, binaryMimeTypes);
-  }
-  return cachedServer;
-}
 
 async function bootstrapSwagger(): Promise<Server> {
   if (!cachedSwaggerServer) {
@@ -38,12 +24,13 @@ async function bootstrapSwagger(): Promise<Server> {
       AppModule,
       new ExpressAdapter(expressApp),
     );
-    app.setGlobalPrefix(stage);
+    // app.setGlobalPrefix(stage);
     const config = new DocumentBuilder()
       .setTitle('BlogApp API Doc')
       .setDescription('The official API BlogApp Documentation')
       .setVersion('1.0')
       .addTag('BlogApp')
+      // .addServer(stage)
       .addBearerAuth({
         name: 'Authorization',
         type: 'http',
@@ -55,6 +42,7 @@ async function bootstrapSwagger(): Promise<Server> {
       .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api-docs', app, document);
+    app.enableCors();
     app.use(eventContext());
     await app.init();
     cachedSwaggerServer = createServer(expressApp, undefined, binaryMimeTypes);
@@ -62,12 +50,15 @@ async function bootstrapSwagger(): Promise<Server> {
   return cachedSwaggerServer;
 }
 
-export const handler: Handler = async (event: any, context: Context) => {
-  cachedServer = await bootstrapServer();
-  return proxy(cachedServer, event, context, 'PROMISE').promise;
+export const lambda_handler: Handler = async (event: any, context: Context) => {
+  // cachedServer = await bootstrapServer();
+  // event.path = event.path.includes('api-docs') ? `/api-docs/` : event.path;
+  cachedSwaggerServer = await bootstrapSwagger();
+  return proxy(cachedSwaggerServer, event, context, 'PROMISE').promise;
 };
 
-export const migrate: Handler = async (event: any, context: Context) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const lambda_migrate: Handler = async (event: any, context: Context) => {
   const isSuccessful = await runMigration();
 
   if (isSuccessful) {
@@ -81,9 +72,4 @@ export const migrate: Handler = async (event: any, context: Context) => {
       body: JSON.stringify({ message: 'Migration failed' }),
     };
   }
-};
-
-export const swagger: Handler = async (event: any, context: Context) => {
-  cachedSwaggerServer = await bootstrapSwagger();
-  return proxy(cachedSwaggerServer, event, context, 'PROMISE').promise;
 };

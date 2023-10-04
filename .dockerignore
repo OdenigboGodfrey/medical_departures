@@ -1,4 +1,5 @@
 package-lock.json
-dist/
-/dist
-# .env
+# dist/
+# /dist
+.env
+# node_modules/

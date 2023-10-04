@@ -11,14 +11,14 @@ provider:
  runtime: nodejs18.x
  region: eu-west-1
  
-#  environment:
-#     PG_HOST: db.cuihe12zvuil.eu-west-1.rds.amazonaws.com
-#     PG_PORT: 3306
-#     PG_USERNAME: bLog_User
-#     PG_PASSWORD: BLogPaSSwORd_12345
-#     PG_DATABASENAME: db
-#     SECRET_KEY: 'blog_uSER_api&#$@-stage'
-#     APP_NAME: 'Blog App'
+ environment:
+    PG_HOST: db.cuihe12zvuil.eu-west-1.rds.amazonaws.com
+    PG_PORT: 3306
+    PG_USERNAME: bLog_User
+    PG_PASSWORD: BLogPaSSwORd_12345
+    PG_DATABASENAME: db
+    SECRET_KEY: 'blog_uSER_api&#$@-stage'
+    APP_NAME: 'Blog App'
     
     # DB_DIALECT: 'mysql'
     # DB_NAME: 'db'
@@ -30,31 +30,34 @@ provider:
 
 functions:
  main: 
-   handler: src/lambda.handler
+   handler: src/lambda.lambda_handler
+   timeout: 30
    events:
      - http:
          method: any
          path: /{any+}
+        
  migrate:
-   handler: src/lambda.migrate
-   timeout: 60
+   handler: src/lambda.lambda_migrate
+   timeout: 30
    events:
      - http:
          method: get
          path: /migrate
- swagger:
-   handler: src/lambda.swagger
-   timeout: 60
-   events:
-     - http:
-         method: any
-         path: /api-docs/{any+}
+#  swagger: 
+#    handler: src/lambda.lambda_swagger
+#    timeout: 30
+#    events:
+#      - http:
+#          method: get
+#          path: /api-docs/{any+}
 package:
-  exclude:
-    - node_modules/**
-custom:
-  deploy: 
-    commands:
-      - npx serverless invoke local -f migrate 
-    stage:
-      before: deploy
+  # exclude:
+  #   - node_modules/**
+  patterns:
+    - "!node_modules/aws-sdk/**"
+    - "!node_modules/**/aws-sdk/**"
+  individually: true
+# custom:
+#   optimize:
+#     external: ['swagger-ui-dist']

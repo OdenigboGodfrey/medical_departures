@@ -1,6 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
-import { Logger } from 'winston';
 import { User } from '../entities/user.entity';
 import { EditUserDTO, UserDTO } from '../dtos/user.dto';
 import { ResponseDTO } from './../../../shared/dto/response.dto';
@@ -17,10 +15,14 @@ import { UserRepositoryInterface } from '../repository/user.repository';
 @Injectable()
 export class UserService {
   constructor(
-    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
     @Inject('UserRepositoryInterface')
     private readonly repository: UserRepositoryInterface,
   ) {}
+
+  logger = {
+    error: (...args: any) => console.error(args),
+    info: (...args: any) => console.log(args),
+  };
 
   public newUserDTO(user: User): UserDTO {
     return { ...user.dataValues };

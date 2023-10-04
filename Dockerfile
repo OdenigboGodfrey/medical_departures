@@ -1,18 +1,8 @@
-FROM node
+FROM public.ecr.aws/lambda/nodejs:18
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# Copy your Lambda function code
+COPY . /var/task/
+RUN npm i
 
-EXPOSE 3002
-
-COPY package*.json ./
-
-RUN npm install
-
-RUN npm install -g @nestjs/cli
-
-COPY . .
-
-RUN npm run build
-
-CMD node dist/main
+# Set the command to be run when the container starts
+CMD [ "src/lambda.lambda_handler" ]
