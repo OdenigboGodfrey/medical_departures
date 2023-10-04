@@ -14,17 +14,16 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 const binaryMimeTypes: string[] = [];
 
 let cachedSwaggerServer: Server;
+const stage = process.env.SERVERLESS_STAGE || 'dev';
 
 async function bootstrapSwagger(): Promise<Server> {
   if (!cachedSwaggerServer) {
-    const stage = process.env.SERVERLESS_STAGE || 'dev';
-
     const expressApp = express();
     const app = await NestFactory.create(
       AppModule,
       new ExpressAdapter(expressApp),
     );
-    // app.setGlobalPrefix(stage);
+    app.setGlobalPrefix(stage);
     const config = new DocumentBuilder()
       .setTitle('BlogApp API Doc')
       .setDescription('The official API BlogApp Documentation')
@@ -51,8 +50,13 @@ async function bootstrapSwagger(): Promise<Server> {
 }
 
 export const lambda_handler: Handler = async (event: any, context: Context) => {
-  // cachedServer = await bootstrapServer();
-  // event.path = event.path.includes('api-docs') ? `/api-docs/` : event.path;
+  console.log('event.path', event.path);
+  if (!event.path.includes('api-docs')) {
+    event.path = event.path.replace(`/${stage}`, '');
+    if (!event.path.startsWith(`/${stage}`)) {
+      event.path = `/${stage}${event.path}`;
+    }
+  }
   cachedSwaggerServer = await bootstrapSwagger();
   return proxy(cachedSwaggerServer, event, context, 'PROMISE').promise;
 };

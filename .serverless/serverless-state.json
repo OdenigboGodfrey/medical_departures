@@ -189,7 +189,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/blogapp-serverless/dev/1696397636086-2023-10-04T05:33:56.086Z/main.zip"
+                "S3Key": "serverless/blogapp-serverless/dev/1696405446658-2023-10-04T07:44:06.658Z/main.zip"
               },
               "Handler": "src/lambda.lambda_handler",
               "Runtime": "nodejs18.x",
@@ -225,7 +225,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/blogapp-serverless/dev/1696397636086-2023-10-04T05:33:56.086Z/migrate.zip"
+                "S3Key": "serverless/blogapp-serverless/dev/1696405446658-2023-10-04T07:44:06.658Z/migrate.zip"
               },
               "Handler": "src/lambda.lambda_migrate",
               "Runtime": "nodejs18.x",
@@ -254,24 +254,24 @@
               "MigrateLogGroup"
             ]
           },
-          "MainLambdaVersionwBRUMGsOdJbT0ZWy0AUwrxShRvujXy78tV0r5uEO6TU": {
+          "MainLambdaVersionKusg8KhEh9M4Vp4ruxrwyb3aE9oStz3fkWxe84DGn7s": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "MainLambdaFunction"
               },
-              "CodeSha256": "Rbmjjx7gxicRZOGLu1ZdXvCoJFHxdWSYgOGNuIoACdw="
+              "CodeSha256": "QxgJ0ZapOmrI3UgqGgnKuZHG9YIq+oxvvuwAHga2BSQ="
             }
           },
-          "MigrateLambdaVersionE4git0oZtqxPQf9HwA7SaM45w3uV2vih682Ra2wvC0": {
+          "MigrateLambdaVersionwFEfgXmALbhMITfxs1bxjIF5r9uLmrq2SRWnGm8ii44": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "MigrateLambdaFunction"
               },
-              "CodeSha256": "Rbmjjx7gxicRZOGLu1ZdXvCoJFHxdWSYgOGNuIoACdw="
+              "CodeSha256": "QxgJ0ZapOmrI3UgqGgnKuZHG9YIq+oxvvuwAHga2BSQ="
             }
           },
           "ApiGatewayRestApi": {
@@ -408,7 +408,7 @@
               "MigrateLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1696397261769": {
+          "ApiGatewayDeployment1696405142559": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -508,7 +508,7 @@
           "MainLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "MainLambdaVersionwBRUMGsOdJbT0ZWy0AUwrxShRvujXy78tV0r5uEO6TU"
+              "Ref": "MainLambdaVersionKusg8KhEh9M4Vp4ruxrwyb3aE9oStz3fkWxe84DGn7s"
             },
             "Export": {
               "Name": "sls-blogapp-serverless-dev-MainLambdaFunctionQualifiedArn"
@@ -517,7 +517,7 @@
           "MigrateLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "MigrateLambdaVersionE4git0oZtqxPQf9HwA7SaM45w3uV2vih682Ra2wvC0"
+              "Ref": "MigrateLambdaVersionwFEfgXmALbhMITfxs1bxjIF5r9uLmrq2SRWnGm8ii44"
             },
             "Export": {
               "Name": "sls-blogapp-serverless-dev-MigrateLambdaFunctionQualifiedArn"
@@ -667,7 +667,7 @@
         "memory": 1024,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "MainLambdaVersionwBRUMGsOdJbT0ZWy0AUwrxShRvujXy78tV0r5uEO6TU"
+        "versionLogicalId": "MainLambdaVersionKusg8KhEh9M4Vp4ruxrwyb3aE9oStz3fkWxe84DGn7s"
       },
       "migrate": {
         "handler": "src/lambda.lambda_migrate",
@@ -693,7 +693,7 @@
         "memory": 1024,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "MigrateLambdaVersionE4git0oZtqxPQf9HwA7SaM45w3uV2vih682Ra2wvC0"
+        "versionLogicalId": "MigrateLambdaVersionwFEfgXmALbhMITfxs1bxjIF5r9uLmrq2SRWnGm8ii44"
       }
     },
     "configValidationMode": "warn",
@@ -716,7 +716,7 @@
         ],
         "individually": true,
         "artifactsS3KeyDirname": "serverless/blogapp-serverless/dev/code-artifacts",
-        "artifactDirectoryName": "serverless/blogapp-serverless/dev/1696397636086-2023-10-04T05:33:56.086Z"
+        "artifactDirectoryName": "serverless/blogapp-serverless/dev/1696405446658-2023-10-04T07:44:06.658Z"
       }
     },
     "layers": {},
@@ -724,7 +724,7 @@
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/blogapp-serverless/dev/1696397636086-2023-10-04T05:33:56.086Z",
+    "artifactDirectoryName": "serverless/blogapp-serverless/dev/1696405446658-2023-10-04T07:44:06.658Z",
     "artifact": ""
   }
 }
